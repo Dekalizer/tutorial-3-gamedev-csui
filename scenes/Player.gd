@@ -30,6 +30,8 @@ func update_hud():
 func get_input():
 	velocity.x = 0
 	if Input.is_action_pressed('ui_right'):
+		$Sprite.play("jalan_kanan")
+		$Sprite.flip_h = false
 		if can_dash() and dash_timeout == 100:
 			print("dashed right")
 			velocity.x += dash_speed
@@ -39,7 +41,9 @@ func get_input():
 			velocity.x += speed
 			last_movement_input_time = 0
 
-	if Input.is_action_pressed('ui_left'):
+	elif Input.is_action_pressed('ui_left'):
+		$Sprite.play("jalan_kanan")
+		$Sprite.flip_h = true
 		if can_dash() and dash_timeout == 100:
 			print("dashed left")
 			velocity.x -= dash_speed
@@ -48,14 +52,21 @@ func get_input():
 		else:
 			velocity.x -= speed
 			last_movement_input_time = 0
+	
+	else:
+		$Sprite.play("idle")
 		
 
 	if is_on_floor() and Input.is_action_pressed("ui_jump"):
-			velocity.y = jump_speed
-			canDoubleJump = true
-			print("can double jump")
+		$Sprite.play("lompat_kanan")
+		$Sprite.flip_h = false
+		velocity.y = jump_speed
+		canDoubleJump = true
+		print("can double jump")
 
 	if velocity.y >= 1/3*jump_speed and canDoubleJump and Input.is_action_pressed("ui_jump"):
+		$Sprite.play("lompat_kanan")
+		$Sprite.flip_h = false
 		print("double jumped")
 		velocity.y = jump_speed*1.5
 		canDoubleJump = false
